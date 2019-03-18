@@ -1,0 +1,15 @@
+1. For this assignment, read about the concept of realease early, release often
+and write at least one reason for and one reason against this practice in the
+submission box.
+
+     For:
+	Because you are getting feedback from your users more frequently you are
+able to make sure the new features you are implementing fully conform to your 
+audience's needs.
+	The user becomes a much bigger part in development potentially making 
+the product more relevant.
+
+
+     Against:
+	Some argue that by releasing an unfinished product you run the risk of
+alienating potential users by providing them a poor experience.
