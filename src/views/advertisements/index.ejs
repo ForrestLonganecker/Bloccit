@@ -12,7 +12,7 @@
             <ul class="list-group">
                 <% advertisements.forEach((advertisement) => { %>
                     <li class="list-group-item">
-                        <a href="/advertisements/<%= advertisement.id %>"> <% advertisement.title %> </a>
+                        <a href="/advertisements/<%= advertisement.id %>"> <%= advertisement.title %> </a>
                     </li>
                <% }) %>
             </ul>
