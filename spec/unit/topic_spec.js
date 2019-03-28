@@ -1,12 +1,14 @@
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
+const Flair = require("../../src/db/models").Flair;
 
 describe("Topic", () => {
 
     beforeEach((done) => {
         this.topic;
         this.post;
+        this.flair;
         sequelize.sync({force: true}).then((res) => {
             Topic.create({
                 title: "Away to Mars",
@@ -21,11 +23,19 @@ describe("Topic", () => {
                 })
                 .then((post) => {
                     this.post = post;
-                    done();
-                })
-                .catch((err) => {
-                    console.log(err);
-                    done();
+                    Flair.create({
+                        name: "Travel",
+                        color: "blue",
+                        topicId: this.topic.id
+                    })
+                    .then((flair) => {
+                        this.flair = flair;
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });    
                 });
             });
         });
@@ -82,4 +92,24 @@ describe("Topic", () => {
             });
         });
     });
+
+    describe("#getFlairs()", () => {
+        it("should return an array of flair objects associated with the topic", (done) => {
+            Flair.create({
+                name: "Space",
+                color: "purple",
+                topicId: this.topic.id
+            });
+            this.topic.getFlairs()
+            .then((flairs) => {
+                expect(flairs[0].name).toBe("Travel");
+                expect(flairs[1].name).toBe("Space");
+                done();
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
+            })
+        })
+    })
 });
