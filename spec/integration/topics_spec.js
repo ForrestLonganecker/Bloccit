@@ -28,19 +28,12 @@ describe("routes : topics", () => {
     describe("GET /topics", () => {
         
         it("should return a status code 200 and all topics", (done) => {
-            Flair.create({
-                name: "Happy",
-                color: "purple",
-                topicId: this.topic.id
-            }).then(() => {
-                request.get(base, (err, res, body) => {
-                    expect(res.statusCode).toBe(200);
-                    expect(err).toBeNull();
-                    expect(body).toContain("Topics");
-                    expect(body).toContain("JS Frameworks");
-                    expect(body).toContain("Happy");
-                    done();
-                });
+            request.get(base, (err, res, body) => {
+                expect(res.statusCode).toBe(200);
+                expect(err).toBeNull();
+                expect(body).toContain("Topics");
+                expect(body).toContain("JS Frameworks");
+                done();
             });
         });
 
