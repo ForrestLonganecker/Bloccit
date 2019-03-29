@@ -18,11 +18,13 @@
                         <a href="/topics/<%= topic.id %>"> <%= topic.title %> </a>
                         <% topic.getFlairs().then((flairs) => { flairs.forEach((flair) => { console.log(flair.name); %>
                             <p class="list-group-item" style="background-color:<%= flair.color%>;"> <%= flair.name %> </p>
-                        <% });}) %>
+                        <% })}); %>
                     </li>
                 <%  }) %>
             </ul>
             
         </main>
+        
+        <% include ../static/partials/baseScripts.ejs %>
     </body>
 </html>
