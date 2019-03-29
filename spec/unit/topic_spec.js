@@ -23,6 +23,7 @@ describe("Topic", () => {
                 })
                 .then((post) => {
                     this.post = post;
+
                     Flair.create({
                         name: "Travel",
                         color: "blue",
@@ -79,17 +80,18 @@ describe("Topic", () => {
                 title: "Martian architecture",
                 body: "Amazing structures",
                 topicId: this.topic.id
-            });
-            this.topic.getPosts()
-            .then((posts) => {
-                expect(posts[0].title).toBe("Endless dessert");
-                expect(posts[1].title).toBe("Martian architecture");
-                done();
-            })
-            .catch((err) => {
-                console.log(err);
-                done();
-            });
+            }).then(() => {
+                this.topic.getPosts()
+                .then((posts) => {
+                    expect(posts[0].title).toBe("Endless dessert");
+                    expect(posts[1].title).toBe("Martian architecture");
+                    done();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                });
+            });    
         });
     });
 
@@ -99,17 +101,18 @@ describe("Topic", () => {
                 name: "Space",
                 color: "purple",
                 topicId: this.topic.id
+            }).then(() => {
+                this.topic.getFlairs()
+                .then((flairs) => {
+                    expect(flairs[0].name).toBe("Travel");
+                    expect(flairs[1].name).toBe("Space");
+                    done();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                });
             });
-            this.topic.getFlairs()
-            .then((flairs) => {
-                expect(flairs[0].name).toBe("Travel");
-                expect(flairs[1].name).toBe("Space");
-                done();
-            })
-            .catch((err) => {
-                console.log(err);
-                done();
-            })
-        })
-    })
+        });
+    });
 });

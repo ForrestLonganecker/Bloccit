@@ -9,10 +9,16 @@
 
             <h1>Topics</h1>
 
+            <a href="/topics/new" class="btn btn-success">New Topic</a>
+
+
             <ul class="list-group">
                 <% topics.forEach((topic) => { %>
                     <li class="list-group-item">
                         <a href="/topics/<%= topic.id %>"> <%= topic.title %> </a>
+                        <% topic.getFlairs().forEach((flair) => { %>
+                            <p class="list-group-item" style="background-color:<%= flair.color%>;"> <%= flair.name %> </p>
+                        <% }) %>
                     </li>
               <%  }) %>
             </ul>
