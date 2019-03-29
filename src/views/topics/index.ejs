@@ -13,10 +13,10 @@
 
 
             <ul class="list-group">
-                <% topics.forEach((topic) => { %>
+                <% topics.forEach((topic) => { console.log(topic.title); %>
                     <li class="list-group-item">
                         <a href="/topics/<%= topic.id %>"> <%= topic.title %> </a>
-                        <% topic.getFlairs().then((flairs) => { flairs.forEach((flair) => { %>
+                        <% topic.getFlairs().then((flairs) => { flairs.forEach((flair) => { console.log(flair.name); %>
                             <p class="list-group-item" style="background-color:<%= flair.color%>;"> <%= flair.name %> </p>
                         <% });}) %>
                     </li>
