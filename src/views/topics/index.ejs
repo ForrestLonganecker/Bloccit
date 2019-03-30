@@ -9,6 +9,9 @@
 
             <h1>Topics</h1>
 
+            <a href="/topics/new" class="btn btn-success">New Post</a>
+
+
             <ul class="list-group">
                 <% topics.forEach((topic) => { %>
                     <li class="list-group-item">
@@ -18,5 +21,7 @@
             </ul>
             
         </main>
+
+        <% include ../static/partials/baseScripts.ejs %>
     </body>
 </html>
