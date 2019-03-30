@@ -69,17 +69,19 @@ describe("Topic", () => {
                 title: "Martian architecture",
                 body: "Amazing structures",
                 topicId: this.topic.id
-            });
-            this.topic.getPosts()
-            .then((posts) => {
-                expect(posts[0].title).toBe("Endless dessert");
-                expect(posts[1].title).toBe("Martian architecture");
-                done();
             })
-            .catch((err) => {
-                console.log(err);
-                done();
-            });
+            .then(() => {
+                this.topic.getPosts()
+                .then((posts) => {
+                    expect(posts[0].title).toBe("Endless dessert");
+                    expect(posts[1].title).toBe("Martian architecture");
+                    done();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                });
+            })
         });
     });
 });
