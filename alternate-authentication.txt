@@ -1,0 +1,14 @@
+> For this assignment, read more about the different strategies available for authenticating with Passport. 
+> Pick a strategy to study and write a high-level explanation of how it works. This explanation does not need to be technical.
+
+  I looked into OpenID, in this assignment we used 'passport-local' which uses local authentication. There are technologies
+set up to make it easier for someone to log into a website by limiting the number of logins they must use overall. OpenID 
+is a decentralized authentication strategy that allows people to log into your website with the login credentials they have used 
+in a different site. 
+
+  For instance, when you set up a CodeWars account, you have the option of signing in via multiple options, a couple being:
+GitHub, and Google.
+
+  I like this method because it can make things a lot more streamlined for the user experience, I personally love having the option to not set 
+up an entirely new login for every site I use. This strategy actually sends data off to the authentication provider "GitHub/Google" they
+confirm whether it is correct or not and let your website know.
