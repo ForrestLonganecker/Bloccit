@@ -11,8 +11,8 @@
 
             <h1><%= post.title %></h1>
             <a href="/topics/<%= post.topicId %>/" class="btn btn-success">Back</a>
-            <% console.log(currentUser.role); %>
-            <% if(currentUser.isOwner() || currentUser.isAdmin()) {  console.log(currentUser.role);%>
+            <% console.log(currentUser.isOwner(<%=post%>)); %>
+            <% if(currentUser.isOwner(post) || currentUser.isAdmin()) { %>
                 <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
                 <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
                     <button type="submit" class="btn btn-danger">Delete</button>
