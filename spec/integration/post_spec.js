@@ -26,8 +26,7 @@ describe("routes : posts", () => {
                     posts: [{
                         title: "My first highball",
                         body: "It was scary, but the view was great!",
-                        userId: this.user.id,
-                        id: 1
+                        userId: this.user.id
                     }]
                 }, {
                     include: {

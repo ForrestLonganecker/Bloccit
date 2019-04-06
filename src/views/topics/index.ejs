@@ -9,6 +9,7 @@
 
             <h1>Topics</h1>
 
+            <% console.log("From topics/index: " + currentUser.role); %>
             <% if(currentUser && currentUser.isAdmin()) { %>
                 <a href="/topics/new" class="btn btn-success">New Topic</a>
             <% } %>
