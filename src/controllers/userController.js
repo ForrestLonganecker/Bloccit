@@ -3,6 +3,7 @@ const passport = require('passport');
 
 module.exports = {
     signUp(req, res, next){
+        console.log(req.user);
         res.render('users/sign_up');
     },
     create(req, res, next){
@@ -28,6 +29,8 @@ module.exports = {
     },
     signIn(req, res, next){
         passport.authenticate('local')(req, res, () => {
+            console.log(req.user);
+            console.log(res.locals.currentUser);
             if(!req.user){
                 req.flash('notice', 'Sign in failed. Please try again.');
                 res.redirect('/users/sign_in');
