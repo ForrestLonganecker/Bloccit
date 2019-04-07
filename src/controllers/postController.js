@@ -48,7 +48,7 @@ module.exports = {
                 res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.id}`)
             } else {
                 console.log("this is req from postController: --> " + req.params.topicId)
-                res.redirect(303, `topics/${req.params.topicId}`)
+               // res.redirect(303, `topics/${req.params.topicId}`)
             }
         });
     },

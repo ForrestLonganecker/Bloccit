@@ -12,9 +12,9 @@
         <main class="container">
             <h1><%= topic.title %></h1>
 
-                <% if(currentUser) { %>
+                <% if(currentUser) { console.log("form topic/show: " + currentUser.role); console.log(currentUser.dataValues.role); %>
                     <a href="/topics/<%= topic.id %>/posts/new" class="btn btn-success">New Post</a>
-                    <% if(currentUser.isAdmin()) { %>
+                    <% if(currentUser.isAdmin()) { console.log("currentUser isAdmin working!"); %>
                         <a href="/topics/<%= topic.id %>/edit" class="btn btn-warning">Edit</a>
                         <form style="display:initial" action="/topics/<%= topic.id %>/destroy" method="post">
                             <button type="submit" class="btn btn-danger">Delete</button>

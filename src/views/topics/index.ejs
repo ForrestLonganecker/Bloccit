@@ -9,8 +9,8 @@
 
             <h1>Topics</h1>
 
-            <% console.log("From topics/index: " + currentUser.role); %>
-            <% if(currentUser && currentUser.isAdmin()) { %>
+            <% console.log("from topic/index: " + currentUser.role); %>
+            <% if(currentUser && currentUser.isAdmin()) { console.log("Hello new button");%>
                 <a href="/topics/new" class="btn btn-success">New Topic</a>
             <% } %>
             <ul class="list-group">

@@ -22,6 +22,7 @@ module.exports = {
         app.use(flash());
         passportConfig.init(app);
         app.use((req, res, next) => {
+            // may be important
             res.locals.currentUser = req.user;
             next();
         })
