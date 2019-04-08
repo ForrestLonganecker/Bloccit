@@ -1,41 +1,33 @@
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
-const User = require("../../src/db/models").User;
 
 describe("Topic", () => {
 
     beforeEach((done) => {
         this.topic;
         this.post;
-        this.user;
         sequelize.sync({force: true}).then((res) => {
-            User.create({
-                email: "rock@climber.com",
-                password: "boulderfields"
+            Topic.create({
+                title: "Away to Mars",
+                description: "Suspense, will there be green men?"
             })
-            .then((user) => {
-                this.user = user;
-                Topic.create({
-                    title: "My first V0",
-                    description: "Stories from that first V0 send",
-                    posts: [{
-                        title: "Trask at Carver",
-                        body: "It was mossy but I loved every second of it",
-                        userId: this.user.id
-                    }]
-                }, {
-                    include: {
-                        model: Post,
-                        as: "posts"
-                    }
+            .then((topic) => {
+                this.topic = topic;
+                Post.create({
+                    title: "Endless dessert",
+                    body: "There are Martians, and they love sweets!",
+                    topicId: this.topic.id
                 })
-                .then((topic) => {
-                    this.topic = topic;
-                    this.post = topic.posts[0];
+                .then((post) => {
+                    this.post = post;
                     done();
                 })
-            })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                });
+            });
         });
     });
 
@@ -76,13 +68,12 @@ describe("Topic", () => {
             Post.create({
                 title: "Martian architecture",
                 body: "Amazing structures",
-                topicId: this.topic.id,
-                userId: this.user.id
+                topicId: this.topic.id
             })
             .then(() => {
                 this.topic.getPosts()
                 .then((posts) => {
-                    expect(posts[0].title).toBe("Trask at Carver");
+                    expect(posts[0].title).toBe("Endless dessert");
                     expect(posts[1].title).toBe("Martian architecture");
                     done();
                 })

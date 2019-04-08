@@ -11,12 +11,8 @@
             <header class="jumbotron my-4">
                 <h1 class="display-3">Welcome to Bloccit</h1>
                 <p class="lead">An application for users to share information.</p>
-                <% if(currentUser) { %>
-                    <a class="btn btn-primary btn-lg" href="/users/sign_out">Sign out</a>
-                <% } else { %>
-                    <a class="btn btn-primary btn-lg" href="/users/sign_up">Sign up</a>
-                    <a class="btn btn-primary btn-lg" href="/users/sign_in">Sign in</a>
-                <% } %>
+                <a href="/users/sign_up" class="btn btn-primary btn-lg">Sign up</a>
+                <a href="/users/sign_in" class="btn btn-primary btn-lg">Sign in</a>
             </header>
             <section class="row text-center">
                 <section class="col-lg-4">

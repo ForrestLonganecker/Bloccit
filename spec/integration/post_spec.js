@@ -11,34 +11,28 @@ describe("routes : posts", () => {
     beforeEach((done) => {
         this.topic;
         this.post;
-        this.user;
+
         sequelize.sync({force: true}).then((res) => {
-            User.create({
-                email: "rock@climber.com",
-                password: "boulderfields"
+            Topic.create({
+                title: "Movies",
+                description: "Post your favorite movie titles here."
             })
-            .then((user) => {
-                this.user = user;
-                Topic.create({
-                    title: "My first V0",
-                    description: "Stories from that first V0 send",
-                    posts: [{
-                        title: "Trask at Carver",
-                        body: "It was mossy but I loved every second of it",
-                        userId: this.user.id
-                    }]
-                }, {
-                    include: {
-                        model: Post,
-                        as: "posts"
-                    }
+            .then((topic) => {
+                this.topic = topic;
+                Post.create({
+                    title: "The Hulk",
+                    body: "not sure which one...",
+                    topicId: this.topic.id
                 })
-                .then((topic) => {
-                    this.topic = topic;
-                    this.post = topic.posts[0];
+                .then((post) => {
+                    this.post = post;
                     done();
                 })
-            })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                });
+            });
         });
     });
 
