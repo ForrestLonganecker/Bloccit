@@ -5,34 +5,42 @@ const base = "http://localhost:3000/topics";
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
+const User = require("../../src/db/models").User;
 
 describe("routes : posts", () => {
 
     beforeEach((done) => {
         this.topic;
         this.post;
-
+        this.user;
+        
         sequelize.sync({force: true}).then((res) => {
-            Topic.create({
-                title: "Movies",
-                description: "Post your favorite movie titles here."
+            User.create({
+                email: "rock@climb.com",
+                password: "123456"
             })
-            .then((topic) => {
-                this.topic = topic;
-                Post.create({
-                    title: "The Hulk",
-                    body: "not sure which one...",
-                    topicId: this.topic.id
+            .then((user) => {
+                this.user = user;
+                Topic.create({
+                    title: "Carver",
+                    description: "tales from beyond the moss",
+                    posts: [{
+                        title: "Trask the highball",
+                        body: "slippery when wet",
+                        userId: this.user.id
+                    }]
+            }, {
+                include: {
+                    model: Post,
+                    as: "posts"
+                }
                 })
-                .then((post) => {
-                    this.post = post;
+                .then((topic) => {
+                    this.topic = topic;
+                    this.post = topic.posts[0];
                     done();
                 })
-                .catch((err) => {
-                    console.log(err);
-                    done();
-                });
-            });
+            })
         });
     });
 
@@ -50,7 +58,7 @@ describe("routes : posts", () => {
         it("should render a view with the selected post", (done) => {
             request.get(`${base}/${this.topic.id}/posts/${this.post.id}`, (err, res, body) => {
                 expect(err).toBeNull();
-                expect(body).toContain("The Hulk");
+                expect(body).toContain("slippery when wet");
                 done();
             });
         });
@@ -61,7 +69,7 @@ describe("routes : posts", () => {
             request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
                 expect(err).toBeNull();
                 expect(body).toContain("Edit post");
-                expect(body).toContain("The Hulk");
+                expect(body).toContain("slippery when wet");
                 done();
             });
         });
