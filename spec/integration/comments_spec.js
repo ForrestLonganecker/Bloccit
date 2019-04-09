@@ -126,17 +126,37 @@ describe("routes : comments", () => {
 
     describe("signed in user performing CRUD actions for Comment", () => {
         beforeEach((done) => {
-            request.get({
-                url: "http://localhost:3000/auth/fake",
-                form: {
-                    role: "member",
-                    userId: this.user.id
+            this.altUser;
+            this.altComment;
+            User.create({
+                email: "alt@email.com",
+                password: "123456",
+                comments: [{
+                    body: "comment from altUser",
+                    postId: this.post.id
+                }]
+            }, {
+                include: {
+                    model: Comment,
+                    as: "comments"
                 }
-            }, 
-                (err, res, body) => {
-                    done();
-                }
-            );
+            })
+            .then((altUser) => {
+                this.altUser = altUser;
+                this.altComment = altUser.comments[0];
+
+                request.get({
+                    url: "http://localhost:3000/auth/fake",
+                    form: {
+                        role: "member",
+                        userId: this.user.id
+                    }
+                }, 
+                    (err, res, body) => {
+                        done();
+                    }
+                );
+            })
         });
 
         describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
@@ -168,7 +188,7 @@ describe("routes : comments", () => {
                 Comment.all()
                 .then((comments) => {
                     const commentCountBeforeDelete = comments.length;
-                    expect(commentCountBeforeDelete).toBe(1);
+                    expect(commentCountBeforeDelete).toBe(2);
                     request.post(
                         `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
                         (err, res, body) => {
@@ -182,10 +202,62 @@ describe("routes : comments", () => {
                     );
                 });
             });
+
+            it("should not delete a comment if you are not the owner", (done) => {
+                Comment.all()
+                .then((comments) => {
+                    const commentCountBeforeDelete = comments.length;
+                    expect(commentCountBeforeDelete).toBe(2);
+                    request.post(
+                        `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.altComment.id}/destroy`,
+                        (err, res, body) => {
+                            Comment.all()
+                            .then((comments) => {
+                                expect(comments.length).toBe(commentCountBeforeDelete);
+                                done();
+                            });
+                        }
+                    );
+                });
+            });
         });
 
 
+       describe("admin performing CRUD actions for Comments", () => {
+           beforeEach((done) => {
+               request.get({
+                   url: "http://localhost:3000/auth/fake",
+                   form: {
+                       role: "admin"
+                   }
+               },
+                    (err, res, body) => {
+                        done();
+                    }
+               );
+           });
 
+           describe("POST /topics/:topicId/posts/:postId/comments/:commentId/destroy", () => {
+               it("should be able to delete other user's comments", (done) => {
+                   Comment.all()
+                   .then((comments) => {
+                       expect(comments[0].id).toBe(1);
+                        request.post(
+                            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+                            (err, res, body) => {
+                                Comment.findById(1)
+                                .then((comment) => {
+                                    expect(err).toBeNull();
+                                    expect(comment).toBeNull();
+                                    done();
+                                });
+                            }
+                        );
+                   });
+               });
+           });
+
+        });
 
     });
 
