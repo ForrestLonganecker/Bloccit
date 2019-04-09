@@ -153,11 +153,9 @@ describe("routes : topics", () => {
                         description: "There are a lot of them"
                     }
                 };
-                // manually input option parameters
                 request.post(options, (err, res, body) => {
                     expect(err).toBeNull();
                     Topic.findOne({
-                        // id: 1
                         where: {id: this.topic.id}
                     })
                     .then((topic) => {
@@ -286,7 +284,6 @@ describe("routes : topics", () => {
                     request.post(options, (err, res, body) => {
                         expect(err).toBeNull();
                         Topic.findOne({
-                            // id: 1
                             where: {id: this.topic.id}
                         })
                         .then((topic) => {

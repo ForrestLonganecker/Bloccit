@@ -35,7 +35,7 @@ module.exports = {
                 }
             });
         } else {
-            req.flash("notice", "You are not authorized to do that");
+            req.flash("notice", "You are not authorized to do that.");
             res.redirect("/topics");
         }
     },

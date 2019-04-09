@@ -33,6 +33,6 @@ module.exports = class ApplicationPolicy {
     }
 
     destroy() {
-        this.update();
+        return this.update();
     }
 }
