@@ -131,6 +131,30 @@ describe("routes : votes", () => {
                     });
                 });
             });
+
+            it("should not create more than one upvote per user per post", (done) => {
+                const options = {
+                    url: `${base}${this.topic.id}/posts/${this.post.id}/votes/upvote`
+                };
+                request.get(options, (err, res, body) => {
+                    Vote.all()
+                    .then((votes) => {
+                        const voteCountBeforeChange = votes.length;
+                        expect(voteCountBeforeChange).toBe(1);
+                        request.get(options, (err, res, body) => {
+                            Vote.all()
+                            .then((votes) => {
+                                expect(votes.length).toBe(voteCountBeforeChange);
+                                done();
+                            });
+                        });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+            });
         });
 
         describe("GET /topics/:topicId/posts/:postId/votes/downvote", () => {
@@ -151,6 +175,30 @@ describe("routes : votes", () => {
                         expect(vote.userId).toBe(this.user.id);
                         expect(vote.postId).toBe(this.post.id);
                         done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
+                });
+            });
+            
+            it("should not create more than one downvote per user per post", (done) => {
+                const options = {
+                    url: `${base}${this.topic.id}/posts/${this.post.id}/votes/downvote`
+                };
+                request.get(options, (err, res, body) => {
+                    Vote.all()
+                    .then((votes) => {
+                        const voteCountBeforeChange = votes.length;
+                        expect(voteCountBeforeChange).toBe(1);
+                        request.get(options, (err, res, body) => {
+                            Vote.all()
+                            .then((votes) => {
+                                expect(votes.length).toBe(voteCountBeforeChange);
+                                done();
+                            });
+                        });
                     })
                     .catch((err) => {
                         console.log(err);

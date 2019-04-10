@@ -2,6 +2,7 @@ const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
+const Vote = require("../../src/db/models").Vote
 
 describe("Post", () => {
 
@@ -9,6 +10,7 @@ describe("Post", () => {
         this.topic;
         this.post;
         this.user;
+        this.vote;
         sequelize.sync({force: true}).then((res) => {
             User.create({
                 email: "rock@climb.com",
@@ -33,9 +35,26 @@ describe("Post", () => {
                 .then((topic) => {
                     this.topic = topic;
                     this.post = topic.posts[0];
-                    done();
+
+                    Vote.create({
+                        value: 1,
+                        userId: this.user.id,
+                        postId: this.post.id
+                    })
+                    .then((vote) => {
+                        this.vote = vote;
+                        done();
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        done();
+                    });
                 })
-            })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                });
+            });
         });
     });
 
@@ -122,10 +141,23 @@ describe("Post", () => {
     });
 
     describe("#getUser()", () => {
-        it("should return the associated topic", (done) => {
+        it("should return the associated user", (done) => {
             this.post.getUser()
             .then((associatedUser) => {
                 expect(associatedUser.email).toBe("rock@climb.com");
+                done();
+            });
+        });
+    });
+
+    describe("#getPoints()", () => {
+        it("should return the point total for the associated post", (done) => {
+            this.post.getPoints()
+            .then((points) => {
+                expect(points).toBe(this.vote.value);
+            })
+            .catch((err) => {
+                console.log(err);
                 done();
             });
         });

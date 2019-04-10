@@ -107,6 +107,46 @@ describe("Vote", () => {
                 done();
             })
         });
+
+        it("should not create a vote with an invalid value", (done) => {
+            Vote.create({
+                value: 0,
+                userId: this.user.id,
+                postId: this.post.id
+            })
+            .then((vote) => {
+                done();
+            })
+            .catch((err) => {
+                expect(err.message).toContain("Validation isIn on value failed");
+                done();
+            })
+        });
+
+        // it("should not create more than one vote per user per post", (done) => {
+        //     Vote.create({
+        //         value: 1,
+        //         userId: this.user.id,
+        //         postId: this.post.id
+        //     })
+        //     .then((res) => {
+        //         console.log(res);
+        //         const valueBeforeChange = this.post.getPoints();
+        //         Vote.create({
+        //             value: 1,
+        //             userId: this.user.id,
+        //             postId: this.post.id
+        //         })
+        //         .then((res) => {
+        //             expect(this.post.getPoints()).toBe(valueBeforeChange);
+        //             done();
+        //         })
+        //         .catch((err) => {
+        //             console.log(err);
+        //             done();
+        //         });
+        //     });
+        // });
     });
 
     describe("#setUser()", () => {
