@@ -15,7 +15,7 @@ module.exports = {
             if(vote){
                 vote.value = val;
                 vote.save()
-                then((vote) => {
+                .then((vote) => {
                     callback(null, vote);
                 })
                 .catch((err) =>{

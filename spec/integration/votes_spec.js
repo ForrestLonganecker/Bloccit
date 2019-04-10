@@ -1,6 +1,6 @@
 const request = require("request");
 const server = require("../../src/server");
-const base = require("http://localhost:3000/topics/");
+const base = "http://localhost:3000/topics/";
 
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
@@ -9,6 +9,7 @@ const User = require("../../src/db/models").User;
 const Vote = require("../../src/db/models").Vote;
 
 describe("routes : votes", () => {
+
     beforeEach((done) => {
         this.user;
         this.topic;
