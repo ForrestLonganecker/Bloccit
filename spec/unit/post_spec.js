@@ -43,6 +43,8 @@ describe("Post", () => {
                     })
                     .then((vote) => {
                         this.vote = vote;
+                        // console.log(this.vote.postId);
+                        // console.log(this.post.id);
                         done();
                     })
                     .catch((err) => {

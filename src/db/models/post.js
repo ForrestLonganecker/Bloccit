@@ -38,8 +38,9 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
   Post.prototype.getPoints = function(){
-    console.log(this);
-    if(this.votes.length === 0) return 0
+    // console.log(this.votes);
+    if(this.votes && this.votes.length === 0) return 0
+    console.log(this.votes);
     return this.votes
       .map((v) => {return v.value})
       .reduce((prev, next) => {return prev + next});
