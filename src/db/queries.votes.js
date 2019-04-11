@@ -27,6 +27,7 @@ module.exports = {
                     postId: req.params.postId,
                     userId: req.user.id
                 }).then((vote) => {
+                    console.log("INSIDE VOTE CREATION" + vote);
                     callback(null, vote);
                 })
                 .catch((err) => {

@@ -18,7 +18,7 @@
 
             <a href="/topics/<%= post.topicId %>/" class="btn btn-secondary">Back</a>
             
-            <% if(currentUser && (currentUser.id === post.userId || currentUser.isAdmin)) { %>
+            <% if(currentUser && (currentUser.isOwner(post) || currentUser.isAdmin())) { %>
                 <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
                 <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
                     <button type="submit" class="btn btn-danger">Delete</button>

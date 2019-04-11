@@ -35,22 +35,7 @@ describe("Post", () => {
                 .then((topic) => {
                     this.topic = topic;
                     this.post = topic.posts[0];
-
-                    Vote.create({
-                        value: 1,
-                        userId: this.user.id,
-                        postId: this.post.id
-                    })
-                    .then((vote) => {
-                        this.vote = vote;
-                        // console.log(this.vote.postId);
-                        // console.log(this.post.id);
-                        done();
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        done();
-                    });
+                    done();
                 })
                 .catch((err) => {
                     console.log(err);
@@ -154,9 +139,38 @@ describe("Post", () => {
 
     describe("#getPoints()", () => {
         it("should return the point total for the associated post", (done) => {
-            this.post.getPoints()
-            .then((points) => {
-                expect(points).toBe(this.vote.value);
+            Vote.create({
+                value: 1,
+                userId: this.user.id,
+                postId: this.post.id
+            })
+            .then((vote) => {
+                console.log(this.post.getPoints());
+                this.vote = vote;
+                this.post.getPoints()
+                .then((total) => {
+                    expect(total).toBe(1);
+                    done();
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+                done();
+            });
+        });
+    });
+
+    describe("#hasUpvoteFor()", () => {
+        it("should return true if the user with matching userId has an upvote", (done) => {
+            expect(this.post.hasUpvoteFor(this.user.id)).toBe(false);
+            Vote.create({
+                value: 1,
+                userId: this.user.id,
+                postId: this.post.id
+            })
+            .then((res) => {
+                expect(this.post.hasUpvoteFor(this.user.id)).toBe(true);
+                done();
             })
             .catch((err) => {
                 console.log(err);
