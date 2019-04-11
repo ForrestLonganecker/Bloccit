@@ -61,18 +61,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
     this.votes.find(checkVote);
-    // this.findOne({where: {
-    //     votes: {
-    //       userId: userId
-    //     }
-    //   }
-    // }).then((vote) => {
-    //   if(!vote || vote.value !== 1){
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // })
   };
   return Post;
 };

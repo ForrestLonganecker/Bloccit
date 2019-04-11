@@ -34,8 +34,16 @@ describe("Post", () => {
                 })
                 .then((topic) => {
                     this.topic = topic;
-                    this.post = topic.posts[0];
-                    done();
+                    Post.findOne({where: {id: topic.posts[0].id},
+                        include: [{
+                            model: Vote,
+                            as: "votes"
+                        }]
+                    })
+                    .then((post) => {
+                        this.post = post;
+                        done();
+                    })
                 })
                 .catch((err) => {
                     console.log(err);
