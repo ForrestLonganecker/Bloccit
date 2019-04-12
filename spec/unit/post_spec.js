@@ -147,19 +147,17 @@ describe("Post", () => {
 
     describe("#getPoints()", () => {
         it("should return the point total for the associated post", (done) => {
+            expect(this.post.getPoints()).toBe(0);
+            console.log(this.post.getPoints());
             Vote.create({
                 value: 1,
                 userId: this.user.id,
                 postId: this.post.id
             })
             .then((vote) => {
-                console.log(this.post.getPoints());
-                this.vote = vote;
-                this.post.getPoints()
-                .then((total) => {
-                    expect(total).toBe(1);
-                    done();
-                })
+                console.log(this.post.getPoints()); 
+                expect(this.post.getPoints()).tobe(vote.value);
+                done();
             })
             .catch((err) => {
                 console.log(err);
