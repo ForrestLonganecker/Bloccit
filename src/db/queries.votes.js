@@ -13,7 +13,7 @@ module.exports = {
         })
         .then((vote) => {
             if(vote){
-                console.log("INSIDE VOTE CREATION, FOUND EXISTING VOTE: ", vote);
+                // console.log("INSIDE VOTE CREATION, FOUND EXISTING VOTE: ", vote);
                 vote.value = val;
                 vote.save()
                 .then((vote) => {
@@ -28,7 +28,7 @@ module.exports = {
                     postId: req.params.postId,
                     userId: req.user.id
                 }).then((vote) => {
-                    console.log("INSIDE INITIAL VOTE CREATION: ", vote);
+                    // console.log("INSIDE INITIAL VOTE CREATION: ", vote);
                     callback(null, vote);
                 })
                 .catch((err) => {

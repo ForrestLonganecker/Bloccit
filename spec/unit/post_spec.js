@@ -148,7 +148,6 @@ describe("Post", () => {
     describe("#getPoints()", () => {
         it("should return the point total for the associated post", (done) => {
             expect(this.post.getPoints()).toBe(0);
-            // console.log("Initial .getPoints value : ", this.post.getPoints());
             Vote.create({
                 value: 1,
                 userId: this.user.id,
@@ -162,7 +161,6 @@ describe("Post", () => {
                     }]
                 })
                 .then((post) => {
-                    // console.log(".then - After vote creation", post.votes[0].value); 
                     expect(post.getPoints()).toBe(1);
                     done();
                 })
