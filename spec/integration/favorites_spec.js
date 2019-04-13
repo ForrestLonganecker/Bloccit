@@ -4,7 +4,6 @@ const server = require("../../src/server");
 const base = "http://localhost:3000/topics/";
 
 const sequelize = require("../../src/db/models/index").sequelize;
-const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
@@ -128,6 +127,7 @@ describe("routes : favorites", () => {
                         }
                     })
                     .then((favorite) => {
+                        // console.log("FROM FAV/CREATE/SPEC: ", favorite);
                         expect(favorite).not.toBeNull();
                         expect(favorite.userId).toBe(this.user.id);
                         expect(favorite.postId).toBe(this.post.id);
@@ -149,17 +149,30 @@ describe("routes : favorites", () => {
                 let favCountBeforeDelete;
 
                 request.post(options, (err, res, body) => {
-                    this.post.getFavorites()
-                    .then((favorites) => {
-                        // oddly included in curriculum
-                        const favorite = favorites[0];
-                        favCountBeforeDelete = favorites.length;
+                    Post.findOne({ where: ({userId: this.user.id, id: this.post.id})})
+                    .then((post) => {
+                        post.getFavorites()
+                        .then((favorites) => {
+                            // oddly included in curriculum
+                            const favorite = favorites[0];
+                            favCountBeforeDelete = favorites.length;
+                            console.log("FROM FAV.DATAVALUES: ", favorite.dataValues);
+                            console.log("FROM FAVCOUNTBEFOREDELETE: ", favCountBeforeDelete);
 
-                        request.post(`${base}${this.topic.id}/posts/${this.post.id}/favorites/destroy`, (err, res, body) => {
-                            this.post.getFavorites()
-                            .then((favorites) => {
-                                expect(favorites.length).toBe(favCountBeforeDelete - 1);
-                                done();
+                            request.post(`${base}${this.topic.id}/posts/${this.post.id}/favorites/${favorite.id}/destroy`, (err, res, body) => {
+                                Post.findOne({ where: ({userId: this.user.id, id: this.post.id})})
+                                .then((post) => {
+                                    post.getFavorites()
+                                    .then((favorites) => {
+                                        console.log("FAVCOUNTAFTERDELETE: ", favorites.length);
+                                        expect(favorites.length).toBe(favCountBeforeDelete - 1);
+                                        done();
+                                    });    
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                    done();
+                                });
                             });
                         });
                     });

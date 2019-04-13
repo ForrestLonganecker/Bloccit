@@ -15,9 +15,10 @@ module.exports = {
     },
     destroy(req, res, next){
         if(req.user){
-            // console.log("FROM FAVORITECONTROLLER INSIDE IF BEFORE DELETE", req);
+            console.log("FROM FAVORITECONTROLLER INSIDE IF BEFORE DELETE", req.user);
             favoriteQueries.deleteFavorite(req, (err, favoritie) => {
                 if(err){
+                    console.log("INSIDE ERROR AFTER FAVORITEQUERIES.DELETE: ", err);
                     req.flash("error", err);
                 }
                 res.redirect(req.headers.referer);
