@@ -7,7 +7,6 @@ const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
 const User = require("../../src/db/models").User;
 
-// console.log("test is working");
 
 describe("routes : posts", () => {
 

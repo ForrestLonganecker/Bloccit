@@ -26,13 +26,9 @@ module.exports = {
             }
 
             const authorized = new Authorizer(req.user, favorite).destroy();
-            // console.log("FROM FAVORITE DESTROYER AFTER AUTH CREATION: ", favorite.userId);
             if(authorized){
-                // console.log("I am authorized to destroy!!")
-                console.log("FAVORITE ID JUST BEFORE FAVOIRTE.DESTROY", id);
-                Favorite.destroy({Where: ({ id: id })})
+                Favorite.destroy({ where: {id}})
                 .then((deletedRecordsCount) => {
-                    // console.log("INSIDE THEN", deletedRecordsCount);
                     callback(null, deletedRecordsCount);
                 })
                 .catch((err) => {

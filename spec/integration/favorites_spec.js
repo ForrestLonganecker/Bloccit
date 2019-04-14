@@ -17,7 +17,6 @@ describe("routes : favorites", () => {
         this.user;
         this.topic;
         this.post;
-        // console.log("first before each!");
         sequelize.sync({force: true}).then((res) => {
             User.create({
                 email: "rock@climb.com",
@@ -127,7 +126,6 @@ describe("routes : favorites", () => {
                         }
                     })
                     .then((favorite) => {
-                        // console.log("FROM FAV/CREATE/SPEC: ", favorite);
                         expect(favorite).not.toBeNull();
                         expect(favorite.userId).toBe(this.user.id);
                         expect(favorite.postId).toBe(this.post.id);
@@ -156,15 +154,12 @@ describe("routes : favorites", () => {
                             // oddly included in curriculum
                             const favorite = favorites[0];
                             favCountBeforeDelete = favorites.length;
-                            console.log("FROM FAV.DATAVALUES: ", favorite.dataValues);
-                            console.log("FROM FAVCOUNTBEFOREDELETE: ", favCountBeforeDelete);
 
                             request.post(`${base}${this.topic.id}/posts/${this.post.id}/favorites/${favorite.id}/destroy`, (err, res, body) => {
                                 Post.findOne({ where: ({userId: this.user.id, id: this.post.id})})
                                 .then((post) => {
                                     post.getFavorites()
                                     .then((favorites) => {
-                                        console.log("FAVCOUNTAFTERDELETE: ", favorites.length);
                                         expect(favorites.length).toBe(favCountBeforeDelete - 1);
                                         done();
                                     });    
