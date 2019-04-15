@@ -2,7 +2,11 @@ const request = require('request');
 const server = require('../../src/server');
 const sequelize = require('../../src/db/models/index').sequelize;
 const base = 'http://localhost:3000/users/';
+
 const User = require('../../src/db/models').User;
+const Topic = require('../../src/db/models').Topic;
+const Post = require('../../src/db/models').Post;
+const Comment = require('../../src/db/models').Comment;
 
 describe('routes: users', () => {
     beforeEach((done) => {
@@ -81,6 +85,60 @@ describe('routes: users', () => {
                 });
             });
         });
+    });
+
+    describe("GET /users/:id", () => {
+        beforeEach((done) => {
+            this.user;
+            this.post;
+            this.comment;
+
+            User.create({
+                email: "rock@climb.com",
+                password: "123456"
+            })
+            .then((user) => {
+                this.user = user;
+
+                Topic.create({
+                    title: "Carver classics",
+                    description: "not just the carver classic",
+                    posts: [{
+                        title: "Trask the highball",
+                        body: "slippery when wet",
+                        userId: this.user.id
+                    }]
+                }, {
+                    include: {
+                        model: Post,
+                        as: "posts"
+                    }
+                })
+                .then((topic) => {
+                    this.post = topic.posts[0];
+
+                    Comment.create({
+                        body: "Sooo mossy",
+                        postId: this.post.id,
+                        userId: this.user.id
+                    })
+                    .then((comment) => {
+                        this.comment = comment;
+                        done();
+                    });
+                });
+            });
+        });
+
+        it("should present a list of comments and posts a user has created", (done) => {
+            request.get(`${base}${this.user.id}`, (err, res, body) => {
+                expect(body).toContain("Trask the highball");
+                expect(body).toContain("Sooo mossy");
+                done();
+            });
+        });
+
+
     });
 
     
