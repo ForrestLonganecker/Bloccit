@@ -7,6 +7,7 @@ const User = require('../../src/db/models').User;
 const Topic = require('../../src/db/models').Topic;
 const Post = require('../../src/db/models').Post;
 const Comment = require('../../src/db/models').Comment;
+const Favorite = require('../../src/db/models').Favorite;
 
 describe('routes: users', () => {
     beforeEach((done) => {
@@ -88,10 +89,12 @@ describe('routes: users', () => {
     });
 
     describe("GET /users/:id", () => {
+        
         beforeEach((done) => {
             this.user;
             this.post;
             this.comment;
+            this.favorite;
 
             User.create({
                 email: "rock@climb.com",
@@ -124,7 +127,15 @@ describe('routes: users', () => {
                     })
                     .then((comment) => {
                         this.comment = comment;
-                        done();
+
+                        Favorite.create({
+                            userId: this.user.id,
+                            postId: this.post.id
+                        })
+                        .then((favorite) => {
+                            this.favorite = favorite;
+                            done();
+                        });
                     });
                 });
             });
@@ -134,6 +145,7 @@ describe('routes: users', () => {
             request.get(`${base}${this.user.id}`, (err, res, body) => {
                 expect(body).toContain("Trask the highball");
                 expect(body).toContain("Sooo mossy");
+                expect(body).toContain("Favorite Posts");
                 done();
             });
         });
