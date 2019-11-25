@@ -18,7 +18,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "dotenv": "^5.0.0",
-    "ejs": "^2.5.7",
+    "ejs": "^3.0.1",
     "express": "^4.16.2",
     "express-flash": "0.0.2",
     "express-session": "^1.15.6",
