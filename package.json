@@ -28,6 +28,6 @@
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^6.0.0",
-    "sequelize-cli": "^5.5.0"
+    "sequelize-cli": "^6.1.0"
   }
 }
